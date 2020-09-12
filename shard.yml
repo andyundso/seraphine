@@ -11,6 +11,8 @@ targets:
 dependencies:
   kemal:
     github: kemalcr/kemal
+  totem:
+    github: icyleaf/totem
 
 crystal: 0.35.1
 

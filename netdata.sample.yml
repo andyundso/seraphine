@@ -1,0 +1,5 @@
+polling_frequency: 30
+servers:
+  - url: https://netdata.com
+    username: sample
+    password: samplepassword

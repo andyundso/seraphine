@@ -1,27 +1,9 @@
-# netdata_dashboard
+# Seraphine
 
-TODO: Write a description here
+Seraphine provides a way to display all messages from your Netdata server on one single page.
 
-## Installation
+## How does it work?
 
-TODO: Write installation instructions here
+Seraphine expects a configuration file named "netdata.yml" in the root folder of the application with a list of Netdata servers where you want to fetch alarms (see netdata.sample.yml).
 
-## Usage
-
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
-
-## Contributing
-
-1. Fork it (<https://github.com/your-github-user/netdata_dashboard/fork>)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
-
-## Contributors
-
-- [your-name-here](https://github.com/your-github-user) - creator and maintainer
+Uponing starting the application, Seraphine spawns a background job for each Netdata server listed and periodically pulls all alarms (configurable in the netdata.yml). The alarms are cached in MongoDB, so the frontend always gets an immediate response from our backend.

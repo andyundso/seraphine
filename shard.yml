@@ -1,0 +1,17 @@
+name: netdata_dashboard
+version: 0.1.0
+
+authors:
+  - Andy Pfister <andy.pfister@hotmail.ch>
+
+targets:
+  netdata_dashboard:
+    main: src/netdata_dashboard.cr
+
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+
+crystal: 0.35.1
+
+license: MIT

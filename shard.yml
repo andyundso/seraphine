@@ -11,6 +11,8 @@ targets:
 dependencies:
   kemal:
     github: kemalcr/kemal
+  tasker:
+    github: spider-gazelle/tasker
   totem:
     github: icyleaf/totem
 

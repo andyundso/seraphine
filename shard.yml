@@ -9,6 +9,8 @@ targets:
     main: src/netdata_dashboard.cr
 
 dependencies:
+  crest:
+    github: mamantoha/crest
   cryomongo:
     github: elbywan/cryomongo
   kemal:

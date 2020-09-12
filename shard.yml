@@ -9,6 +9,8 @@ targets:
     main: src/netdata_dashboard.cr
 
 dependencies:
+  cryomongo:
+    github: elbywan/cryomongo
   kemal:
     github: kemalcr/kemal
   tasker:

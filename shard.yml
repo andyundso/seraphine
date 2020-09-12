@@ -15,6 +15,7 @@ dependencies:
     github: elbywan/cryomongo
   kemal:
     github: kemalcr/kemal
+    branch: master
   tasker:
     github: spider-gazelle/tasker
   totem:

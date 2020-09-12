@@ -1,6 +1,7 @@
 require "./netdata"
 require "crest"
 require "cryomongo"
+require "kemal"
 require "tasker"
 require "totem"
 
@@ -32,5 +33,13 @@ module NetdataDashboard
         end
       end
     end  
+  end
+
+  ws "/alarms" do |socket|
+  end
+
+  Kemal.run do |config|
+    server = config.server.not_nil!
+    server.bind_tcp "0.0.0.0", 8000, reuse_port: true
   end
 end

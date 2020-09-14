@@ -1,3 +1,4 @@
+require "./db"
 require "./netdata"
 require "crest"
 require "cryomongo"
@@ -10,11 +11,13 @@ module NetdataDashboard
 
   client = Mongo::Client.new
   database = client["seraphine"]
+  
   configuration = Totem.from_file "./netdata.yaml"
   netdata_servers = configuration.get("servers").as_a
+  polling_frequency = configuration.get("polling_frequency").as_i.seconds
 
   netdata_servers.each do |netdata_server|
-    task = Tasker.every((configuration.get("polling_frequency").as_i).seconds) do
+    task = Tasker.every(polling_frequency) do
       http_client = Crest::Resource.new(
        netdata_server.as_h["url"].as_s,
        auth: "basic",
@@ -36,6 +39,21 @@ module NetdataDashboard
   end
 
   ws "/alarms" do |socket|
+    loop do
+      alarms = Hash(String, Array(JSON::Any)).new
+      collections = database.command(Mongo::Commands::ListCollections, options: { nameOnly: true })
+
+      if collections
+        collections.cursor.first_batch.map do |collection_object|
+          collection = DB::Collection.from_json(collection_object.to_json)
+          alarms[collection.name] = database[collection.name].find(BSON.new).to_a.map { |bson_object| JSON.parse(bson_object.to_json) }
+        end
+
+        socket.send(alarms.to_json)
+      end
+
+      sleep polling_frequency
+    end
   end
 
   Kemal.run do |config|

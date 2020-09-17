@@ -6,7 +6,11 @@ import './index.scss'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <div className="columns is-centered">
+      <div className="column is-four-fifths-desktop">
+        <App />
+      </div>
+    </div>
   </React.StrictMode>,
   document.getElementById('root')
 );

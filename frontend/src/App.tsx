@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { SystemAlarms } from './types'
+import { formatISO9075, fromUnixTime } from 'date-fns'
 
 function App() {
-  const [alarms, setAlarms] = useState();
+  const [alarms, setAlarms] = useState<SystemAlarms>({});
   const ws = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -18,7 +20,7 @@ function App() {
     if (!ws.current) return;
 
     ws.current.onmessage = e => {
-      const message = JSON.parse(e.data);
+      const message: SystemAlarms = JSON.parse(e.data);
       setAlarms(message)
     };
   }, [alarms]);
@@ -26,19 +28,31 @@ function App() {
   return (
     <>
       <h3 className="title is-3">Netdata alarms</h3>
-      <table className="table is-bordered">
+
+      { Object.keys(alarms).length > 0 && <table className="table is-bordered">
         <thead>
           <tr>
             <th>System</th>
             <th>Alarm</th>
-            <th>Last status change</th>
             <th>Current value</th>
+            <th>Last status change</th>
           </tr>
         </thead>
         <tbody>
-
+          {Object.keys(alarms).map(system_name =>
+            alarms[system_name].map(alarms =>
+              <tr key={alarms.value}>
+                <td>{system_name} </td>
+                <td>{alarms.name}</td>
+                <td>{alarms.value}</td>
+                <td>{formatISO9075(fromUnixTime(alarms.last_raised))}</td>
+              </tr>
+            )
+          )}
         </tbody>
-      </table>
+      </table>}
+
+      { Object.keys(alarms).length <= 0 && <p>No data available</p>}
     </>
   );
 }

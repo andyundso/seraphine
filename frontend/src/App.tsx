@@ -1,33 +1,36 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { SystemAlarms } from './types'
 import { formatISO9075, fromUnixTime } from 'date-fns'
+import useWebSocket from 'react-use-websocket';
+import { Notification } from './Notification';
 
 function App() {
   const [alarms, setAlarms] = useState<SystemAlarms>({});
-  const ws = useRef<WebSocket | null>(null);
+  const didUnmount = useRef(false);
 
-  useEffect(() => {
-    ws.current = new WebSocket('ws://localhost:8000/alarms');
-    ws.current.onopen = () => console.log("WebSocket openend");
-    ws.current.onclose = () => console.log("WebSocket closed");
+  const {
+    readyState
+  } = useWebSocket('ws://localhost:8000/alarms', {
 
-    return () => {
-      ws.current?.close();
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!ws.current) return;
-
-    ws.current.onmessage = e => {
-      const message: SystemAlarms = JSON.parse(e.data);
+    onMessage: (data) => {
+      const message: SystemAlarms = JSON.parse(data.data);
       setAlarms(message)
-    };
-  }, [alarms]);
+    },
+
+    shouldReconnect: (closeEvent) => {
+      /*
+        useWebSocket will handle unmounting for you, but this is an example of a 
+        case in which you would not want it to automatically reconnect
+      */
+      return didUnmount.current === false;
+    }
+  });
 
   return (
     <>
       <h3 className="title is-3">Netdata alarms</h3>
+
+      { readyState != 1 && <Notification />}
 
       { Object.keys(alarms).length > 0 && <table className="table is-bordered">
         <thead>

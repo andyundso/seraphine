@@ -5,5 +5,6 @@ export interface SystemAlarms {
 export interface Alarm {
   name: string;
   last_raised: number;
+  status: string;
   value: string;
 }

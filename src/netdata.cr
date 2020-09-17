@@ -25,6 +25,9 @@ module Netdata
       @[JSON::Field(key: last_status_change)]
       property last_raised : Int32
 
+      @[JSON::Field(key: status)]
+      property status : String
+
       @[JSON::Field(key: value_string)]
       property value : String
 
@@ -32,6 +35,7 @@ module Netdata
         {
           name: name,
           last_raised: last_raised,
+          status: status,
           value: value
         }
       end

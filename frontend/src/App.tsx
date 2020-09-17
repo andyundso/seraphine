@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { SystemAlarms } from './types'
 import { formatISO9075, fromUnixTime } from 'date-fns'
 import useWebSocket from 'react-use-websocket';
@@ -30,7 +30,7 @@ function App() {
     <>
       <h3 className="title is-3">Netdata alarms</h3>
 
-      { readyState != 1 && <Notification />}
+      { readyState !== 1 && <Notification />}
 
       { Object.keys(alarms).length > 0 && <table className="table is-bordered">
         <thead>
@@ -43,12 +43,12 @@ function App() {
         </thead>
         <tbody>
           {Object.keys(alarms).map(system_name =>
-            alarms[system_name].map(alarms =>
-              <tr key={alarms.value}>
+            alarms[system_name].map(alarm =>
+              <tr key={alarm.value} className={alarm.status === 'WARNING' ? 'tr-warning' : 'tr-danger'}>
                 <td>{system_name} </td>
-                <td>{alarms.name}</td>
-                <td>{alarms.value}</td>
-                <td>{formatISO9075(fromUnixTime(alarms.last_raised))}</td>
+                <td>{alarm.name}</td>
+                <td>{alarm.value}</td>
+                <td>{formatISO9075(fromUnixTime(alarm.last_raised))}</td>
               </tr>
             )
           )}

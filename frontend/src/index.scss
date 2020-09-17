@@ -1,0 +1,11 @@
+@charset "utf-8";
+@import "../node_modules/bulma/bulma.sass";
+
+.tr-warning {
+  background-color: $warning;
+}
+
+.tr-danger {
+  background-color: $danger;
+  color: $white;
+}

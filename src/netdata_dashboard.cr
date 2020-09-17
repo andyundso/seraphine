@@ -17,7 +17,7 @@ module NetdataDashboard
   polling_frequency = configuration.get("polling_frequency").as_i.seconds
 
   netdata_servers.each do |netdata_server|
-    task = Tasker.every(polling_frequency) do
+    Tasker.every(polling_frequency) do
       http_client = Crest::Resource.new(
        netdata_server.as_h["url"].as_s,
        auth: "basic",
@@ -35,7 +35,11 @@ module NetdataDashboard
           collection.insert_one(Netdata::Alarm::Detail.from_json(alarm_values.to_json).to_h)
         end
       end
-    end  
+    end
+
+    Tasker.every(1.hour) do
+      database.command(Mongo::Commands::DropDatabase)
+    end
   end
 
   ws "/alarms" do |socket|

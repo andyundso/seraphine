@@ -1,3 +1,4 @@
+require "./logger"
 require "cryomongo"
 require "future"
 require "tasker"
@@ -7,15 +8,15 @@ module Seraphine
   class Background
     property configuration : Totem::Config
     property database : Mongo::Database
+    property logger : Seraphine::Logger
 
-    def initialize
+    def initialize(logger : Seraphine::Logger)
       @configuration = Totem.from_file "./netdata.yaml"
       @database = Mongo::Client.new["seraphine"]
+      @logger = logger
     end
 
     def enqueue
-      results = [] of Future::Compute::State
-
       netdata_servers = configuration.get("servers").as_a
       netdata_servers.each do |netdata_server|
         get_alarms_for_host(netdata_server)
@@ -26,7 +27,9 @@ module Seraphine
 
     private def drop_database_job
       task = Tasker.every(1.hour) do
+        @logger.pretty_write("Started dropping database.")
         database.command(Mongo::Commands::DropDatabase)
+        @logger.pretty_write("Finished dropping database.")
       end
 
       task.get
@@ -34,8 +37,12 @@ module Seraphine
 
     private def get_alarms_for_host(netdata_server)
       task = Tasker.every(@configuration.get("polling_frequency").as_i.seconds) do
+        netdata_server_url = netdata_server.as_h["url"].as_s
+
+        @logger.pretty_write("Started fetching information for #{netdata_server_url}")
+
         http_client = Crest::Resource.new(
-          netdata_server.as_h["url"].as_s,
+          netdata_server_url,
           auth: "basic",
           user: netdata_server.as_h["username"].as_s,
           password: netdata_server.as_h["password"].as_s
@@ -51,6 +58,8 @@ module Seraphine
             collection.insert_one(Netdata::Alarm::Detail.from_json(alarm_values.to_json).to_h)
           end
         end
+
+        @logger.pretty_write("Finished fetching information for #{netdata_server_url}")
       end
 
       task.get

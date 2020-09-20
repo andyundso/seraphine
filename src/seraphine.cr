@@ -1,6 +1,7 @@
 require "./db"
 require "./netdata"
 require "./seraphine/background"
+require "./seraphine/logger"
 require "crest"
 require "cryomongo"
 require "kemal"
@@ -15,8 +16,10 @@ module Seraphine
 
   configuration = Totem.from_file "./netdata.yaml"
   polling_frequency = configuration.get("polling_frequency").as_i.seconds
+  seraphine_logger = Seraphine::Logger.new
 
-  Tasker.in(5.seconds) { Seraphine::Background.new.enqueue }
+  Kemal.config.logger = seraphine_logger
+  Tasker.in(5.seconds) { Seraphine::Background.new(seraphine_logger).enqueue }
 
   ws "/alarms" do |socket|
     loop do

@@ -6,7 +6,7 @@ require "kemal"
 require "tasker"
 require "totem"
 
-module NetdataDashboard
+module Seraphine
   VERSION = "0.1.0"
 
   client = Mongo::Client.new

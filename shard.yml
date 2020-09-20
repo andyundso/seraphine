@@ -1,12 +1,12 @@
-name: netdata_dashboard
+name: seraphine
 version: 0.1.0
 
 authors:
-  - Andy Pfister <andy.pfister@hotmail.ch>
+  - Andy Pfister <andy.pfister@hey.com>
 
 targets:
-  netdata_dashboard:
-    main: src/netdata_dashboard.cr
+  serpahine:
+    main: src/seraphine.cr
 
 dependencies:
   crest:

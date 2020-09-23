@@ -1,3 +1,5 @@
+database_name: seraphine
+database_url: mongodb://localhost:27017
 polling_frequency: 30
 servers:
   - url: https://netdata.com

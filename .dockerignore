@@ -3,7 +3,8 @@
 /bin/
 /.shards/
 *.dwarf
-netdata.yml
+seraphine.yml
+seraphine.sample.yml
 
 # Ignore gitignores
 .gitignore

@@ -8,13 +8,13 @@ module Seraphine
 
     def initialize(logger : Seraphine::Logger)
       Kemal.config.logger = logger
-      @configuration = Totem.from_file "./netdata.yaml"
-      @database = Mongo::Client.new["seraphine"]
+      @configuration = Totem.from_file "./seraphine.yaml"
+      @database = Mongo::Client.new(@configuration.get("database_url").as_s)[@configuration.get("database_name").as_s]
     end
 
     def run
       ws "/alarms" do |socket|
-        polling_frequency = configuration.get("polling_frequency").as_i.seconds
+        polling_frequency = @configuration.get("polling_frequency").as_i.seconds
 
         loop do
           alarms = Hash(String, Array(JSON::Any)).new

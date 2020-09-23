@@ -1,4 +1,5 @@
 require "./logger"
+require "crest"
 require "cryomongo"
 require "future"
 require "tasker"

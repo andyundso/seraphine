@@ -35,4 +35,4 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags: user/app:latest
+          tags: ${{ steps.prepare.outputs.tag }}

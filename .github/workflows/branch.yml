@@ -14,6 +14,7 @@ jobs:
         uses: Surgo/docker-smart-tag-action@v1
         with:
           docker_image: ghcr.io/andyundso/seraphine
+          default_branch: ${{ github.event.repository.default_branch }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1

@@ -1,0 +1,38 @@
+/docs/
+/lib/
+/bin/
+/.shards/
+*.dwarf
+netdata.yml
+
+# Ignore gitignores
+.gitignore
+frontend/.gitignore
+
+# Ignore Git folder
+.git
+
+# dependencies
+frontend/node_modules
+frontend/.pnp
+frontend.pnp.js
+
+# testing
+frontend/coverage
+
+# production
+frontend/build
+
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Ignore the Dockerfile and dockerignore itself
+Dockerfile
+.dockerignore
+
+# Ignore the shards lib folder
+lib/
+
+# Add Github's hidden folder
+.github/*

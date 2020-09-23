@@ -33,3 +33,6 @@ Dockerfile
 
 # Ignore the shards lib folder
 lib/
+
+# Add Github's hidden folder
+.github/*

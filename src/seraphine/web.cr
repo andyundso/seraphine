@@ -6,9 +6,9 @@ module Seraphine
     property configuration : Totem::Config
     property database : Mongo::Database
 
-    def initialize(logger : Seraphine::Logger)
+    def initialize(logger : Seraphine::Logger, configuration : Totem::Config)
       Kemal.config.logger = logger
-      @configuration = Totem.from_file "./seraphine.yaml"
+      @configuration = configuration
       @database = Mongo::Client.new(@configuration.get("database_url").as_s)[@configuration.get("database_name").as_s]
     end
 

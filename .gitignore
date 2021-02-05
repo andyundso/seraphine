@@ -3,4 +3,4 @@
 /bin/
 /.shards/
 *.dwarf
-netdata.yml
+seraphine.yml

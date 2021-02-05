@@ -1,4 +1,5 @@
 require "./logger"
+require "crest"
 require "cryomongo"
 require "future"
 require "tasker"
@@ -10,9 +11,9 @@ module Seraphine
     property database : Mongo::Database
     property logger : Seraphine::Logger
 
-    def initialize(logger : Seraphine::Logger)
-      @configuration = Totem.from_file "./netdata.yaml"
-      @database = Mongo::Client.new["seraphine"]
+    def initialize(logger : Seraphine::Logger, configuration : Totem::Config)
+      @configuration = configuration
+      @database = Mongo::Client.new(@configuration.get("database_url").as_s)[@configuration.get("database_name").as_s]
       @logger = logger
     end
 
@@ -28,7 +29,7 @@ module Seraphine
     private def drop_database_job
       task = Tasker.every(1.hour) do
         @logger.pretty_write("Started dropping database.")
-        database.command(Mongo::Commands::DropDatabase)
+        @database.command(Mongo::Commands::DropDatabase)
         @logger.pretty_write("Finished dropping database.")
       end
 

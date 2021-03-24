@@ -4,10 +4,6 @@ shards:
     git: https://github.com/elbywan/bson.cr.git
     version: 0.2.10
 
-  crest:
-    git: https://github.com/mamantoha/crest.git
-    version: 0.26.1
-
   cron_parser:
     git: https://github.com/kostya/cron_parser.git
     version: 0.3.0
@@ -28,13 +24,9 @@ shards:
     git: https://github.com/crystal-community/future.cr.git
     version: 0.1.0
 
-  http-client-digest_auth:
-    git: https://github.com/mamantoha/http-client-digest_auth.git
-    version: 0.4.0
-
-  http_proxy:
-    git: https://github.com/mamantoha/http_proxy.git
-    version: 0.7.1
+  halite:
+    git: https://github.com/icyleaf/halite.git
+    version: 0.10.8
 
   kemal:
     git: https://github.com/kemalcr/kemal.git

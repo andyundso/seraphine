@@ -9,10 +9,10 @@ targets:
     main: src/seraphine.cr
 
 dependencies:
-  crest:
-    github: mamantoha/crest
   cryomongo:
     github: elbywan/cryomongo
+  halite:
+    github: icyleaf/halite
   kemal:
     github: kemalcr/kemal
     branch: master
